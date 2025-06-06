@@ -1,0 +1,3 @@
+-cache:il1 il1:64:8::l -cache:il2 none -cache:dl1 dl1:64:8::l -cache:dl2 none -tlb:itlb none -tlb:dtlb none
+-cache:il1 il1:64:8::f -cache:il2 none -cache:dl1 dl1:64:8::f -cache:dl2 none -tlb:itlb none -tlb:dtlb none
+-cache:il1 il1:64:8::r -cache:il2 none -cache:dl1 dl1:64:8::r -cache:dl2 none -tlb:itlb none -tlb:dtlb none
