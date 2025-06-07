@@ -1,3 +1,5 @@
+#Use bench.sh instead, issues with GO benchmark here
+
 import argparse
 import subprocess
 import re

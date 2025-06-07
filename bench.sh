@@ -20,6 +20,8 @@ else
   exit 1
 fi
 
+count=1
+
 while IFS= read -r config_line; do
   echo "Running config: $config_line"
   CONFIG_ARGS=($config_line)
@@ -43,9 +45,13 @@ while IFS= read -r config_line; do
 
   echo "$(echo "$config_line" | grep -oP "(?<=-cache:il1\s)il1:[^ ]+"),$IL1_MISSRATE,$DL1_MISSRATE" >> results/missrates.csv
 
-  echo -e "sim_num_insn=$SIM_NUM_INSN\nsim_num_refs=$SIM_NUM_REFS\n\n" >> results/results.csv
-  echo -e "$(echo "$config_line" | grep -oP "(?<=-cache:il1\s)il1:[^ ]+")\nmisses=$IL1_MISSES\nhits=$IL1_HITS\nmissrate=$IL1_MISSRATE\n" >> results/results.csv
-  echo -e "$(echo "$config_line" | grep -oP "(?<=-cache:dl1\s)dl1:[^ ]+")\nmisses=$DL1_MISSES\nhits=$DL1_HITS\nmissrate=$DL1_MISSRATE\n\n" >> results/results.csv
+  echo "================Benchmark $count================" >> results/results.txt
+  echo -e "sim_num_insn=$SIM_NUM_INSN\nsim_num_refs=$SIM_NUM_REFS\n\n" >> results/results.txt
+  echo -e "$(echo "$config_line" | grep -oP "(?<=-cache:il1\s)il1:[^ ]+")\nmisses=$IL1_MISSES\nhits=$IL1_HITS\nmissrate=$IL1_MISSRATE\n" >> results/results.txt
+  echo -e "$(echo "$config_line" | grep -oP "(?<=-cache:dl1\s)dl1:[^ ]+")\nmisses=$DL1_MISSES\nhits=$DL1_HITS\nmissrate=$DL1_MISSRATE" >> results/results.txt
+  echo -e "===========================================\n\n" >> results/results.txt
+
+  count=$((count+1))
 
 done < "$CONFIG_FILE"
 
