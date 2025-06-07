@@ -2,35 +2,50 @@ import argparse
 import subprocess
 import re
 import matplotlib.pyplot as plt
+import numpy as np
 
-def draw_graph(missrate, cacheConfig):
-  plt.figure(figsize=(8,5))
-  plt.bar(missrate, cacheConfig, color='skyblue')
+i_missrate = []
+d_missrate = []
+cacheConfig = []
 
+def draw_graph():
+  width = 0.35
+  
+  bar1 = np.arange(len(cacheConfig))
+  bar2 = [i+width for i in bar1]
+  
+  plt.figure(figsize=(10,6))
+  plt.bar(bar1, i_missrate, width, label='IL1 Miss Rate', color='skyblue')
+  plt.bar(bar2, d_missrate, width, label='DL1 Miss Rate', color='red')
+
+  plt.xlabel("Cache Configuration")
+  plt.ylabel("Miss Rate")
+  plt.title("L1 Cache Miss Rate per Configuration")
+  plt.xticks((bar1+bar2)/2, cacheConfig, ha="center")
+  plt.legend()
+
+  plt.ylim(0, 1)
   plt.tight_layout()
-  plt.show()
+  plt.savefig("results.png", dpi=150)
 
-def parse_output(output):
-  matches = []
-  matches.append(re.search(r"sim_num_insn\s+(\d+)", output).group(1))
-  matches.append(re.search(r"sim_num_refs\s+(\d+)", output).group(1))
 
-  matches.append(re.search(r"il1\.misses\s+(\d+)", output).group(1))
-  matches.append(re.search(r"il1\.hits\s+(\d+)", output).group(1))
-  matches.append(re.search(r"il1\.miss_rate\s+(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)", output).group(1)) #fuckass regex
+def parse_print_output(output):
+  print("sim_num_insn = ", re.search(r"sim_num_insn\s+(\d+)", output).group(1))
+  print("sim_num_refs = ", re.search(r"sim_num_refs\s+(\d+)", output).group(1))
 
-  cacheConfig = re.search(r"-cache:il1\s+(\S+)", output).group(1)
+  print("il1.misses = ", re.search(r"il1\.misses\s+(\d+)", output).group(1))
+  print("il1.hits = ", re.search(r"il1\.hits\s+(\d+)", output).group(1))
+  imiss = re.search(r"il1\.miss_rate\s+(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)", output).group(1) #fuckass regex
+  i_missrate.append(float(imiss))
+  print("il1.miss_rate = ", imiss)
 
-  pretty_print_output(matches)
-  draw_graph(matches[4], cacheConfig)
-
-def pretty_print_output(matches):
-  print("sim_num_insn = ", matches[0])
-  print("sim_num_refs = ", matches[1])
-  print("il1.misses = ", matches[2])
-  print("il1.hits = ", matches[3])
-  print("il1.miss_rate = ", matches[4])
-  print("\n\n")
+  print("dl1.misses = ", re.search(r"dl1\.misses\s+(\d+)", output).group(1))
+  print("dl1.hits = ", re.search(r"dl1\.hits\s+(\d+)", output).group(1))
+  dmiss = re.search(r"dl1\.miss_rate\s+(-?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?)", output).group(1)
+  d_missrate.append(float(dmiss))
+  print("dl1.miss_rate = ", dmiss)
+  
+  cacheConfig.append(re.search(r"-cache:il1\s+(\S+)", output).group(1))
 
 
 def run_sim(config, compilerPath, optArgs, benchPath):
@@ -48,10 +63,11 @@ def run_sim(config, compilerPath, optArgs, benchPath):
     
     print(' '.join(command))
     result = subprocess.run(command, capture_output=True, text=True, check=True)
-    parse_output(result.stderr)
+    parse_print_output(result.stderr)
   
   except subprocess.CalledProcessError as e:
     print(f"Error occurred: {e.stderr}")
+
 
 def main() -> None:
   parser = argparse.ArgumentParser(description="sim-cache benchmarking tool")
@@ -82,6 +98,9 @@ def main() -> None:
   with open(args.config, "r") as f:
     for line in f:
       run_sim(line.strip(), compilerPath, optArgs, benchPath)
+    
+  draw_graph()
+
 
 if __name__ == "__main__":
   main()
