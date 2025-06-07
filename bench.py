@@ -8,7 +8,7 @@ i_missrate = []
 d_missrate = []
 cacheConfig = []
 
-def draw_graph():
+def draw_graph() -> None:
   width = 0.35
   
   bar1 = np.arange(len(cacheConfig))
@@ -29,7 +29,7 @@ def draw_graph():
   plt.savefig("results.png", dpi=150)
 
 
-def parse_print_output(output):
+def parse_print_output(output) -> None:
   print("sim_num_insn = ", re.search(r"sim_num_insn\s+(\d+)", output).group(1))
   print("sim_num_refs = ", re.search(r"sim_num_refs\s+(\d+)", output).group(1))
 
@@ -81,15 +81,14 @@ def main() -> None:
   print(f"\tBench: {args.bench}\n\n")
 
   compilerPath = benchPath = "Benchmarks/"
-  optArgs = []
+  optArgs = ""
   
   if(args.bench == "go"):
     compilerPath += "go/go.ss"
     benchPath += "go/2stone9.in"
 
     # Optional args for the go benchmark
-    optArgs.append("50")
-    optArgs.append("9")
+    optArgs += "50 9"
 
   elif(args.bench == "li"):
     compilerPath += "li/li.ss"
