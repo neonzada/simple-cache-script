@@ -53,18 +53,19 @@ def parse_print_output(output) -> None:
 def run_sim(config, compilerPath, optArgs, benchPath):
   config_list = config.split()
   try:
-    command = ["./simplesim-3.0/sim-cache"]
+    command = ["./sim-cache"]
     for c in config_list:
       command.append(c)
 
     command.append(compilerPath)
     if optArgs:
-      command.append(optArgs)
+        for opt in optArgs.split(' '):
+          command.append(opt)
     
     command.append(benchPath)
     
     print(' '.join(command))
-    result = subprocess.run(command, capture_output=True, text=True, check=True)
+    result = subprocess.run(command, capture_output=True, text=True)
     parse_print_output(result.stderr)
   
   except subprocess.CalledProcessError as e:
@@ -82,7 +83,7 @@ def main() -> None:
   print(f"\tConfig: {args.config}")
   print(f"\tBench: {args.bench}\n\n")
 
-  compilerPath = benchPath = "Benchmarks/"
+  compilerPath = benchPath = "./benchmarks/"
   optArgs = ""
   
   if(args.bench == "go"):

@@ -1,0 +1,139 @@
+ CREATE  Db Header and Db Primal  ... 
+  NEW DB [ 3] Created.
+
+VORTEX INPUT PARAMETERS::
+ 	MESSAGE       FileName:	 vortex.msg           
+	OUTPUT        FileName:	 vortex.out           
+	DISK CACHE    FileName:	 NULL                 
+	PART DB       FileName:	 parts.db             
+	DRAW DB       FileName:	 draw.db              
+	PERSON DB     FileName:	 emp.db               
+	PERSONS Data  FileName:	 persons.250          
+	PARTS         Count   :	 30      
+	OUTER         Loops   :	 1       
+	INNER         Loops   :	 2       
+	LOOKUP        Parts   :	 5       
+	DELETE        Parts   :	 20      
+	STUFF         Parts   :	 20      
+	DEPTH         Traverse:	 2       
+	% DECREASE    Parts   :	 5       
+	% INCREASE    LookUps :	 2       
+	% INCREASE    Deletes :	 2       
+	% INCREASE    Stuffs  :	 2       
+	FREEZE_PACKETS        :	 1       
+	ALLOC_CHUNKS          :	 10000   
+	EXTEND_CHUNKS         :	 5000    
+	DELETE Draw objects   :	 True                 
+	DELETE Part objects   :	 False                
+	QUE_BUG               :	 1000
+	VOID_BOUNDARY         :	 67108864
+	VOID_RESERVE          :	 1048576
+
+	COMMIT_DBS            :	 False
+
+
+
+ BMT TEST :: files...
+      EdbName           := PartLib
+      EdbFileName       := parts.db
+      DrwName           := DrawLib
+      DrwFileName       := draw.db
+      EmpName           := PersonLib
+      EmpFileName       := emp.db
+
+      Swap to DiskCache := False
+      Freeze the cache  := True
+
+
+ BMT TEST :: parms...
+      DeBug modulo      := 1000    
+      Create Parts count:= 30      
+      Outer Loops       := 1       
+      Inner Loops       := 2       
+      Look Ups          := 5       
+      Delete Parts      := 20      
+      Stuff Parts       := 20      
+      Traverse Limit    := 2       
+      Delete Draws      := True
+      Delete Parts      := False
+      Delete ALL Parts  := after every <mod  0>Outer Loop
+
+ INITIALIZE LIBRARY ::
+
+ INITIALIZE SCHEMA ::
+  Primal_CreateDb Accessed !!!
+ CREATE  Db Header and Db Primal  ... 
+  NEW DB [ 4] Created.
+   PartLibCreate:: Db[  4]; VpartsDir=   1
+
+ Part Count=       1
+
+ Initialize the Class maps
+ LIST HEADS  loaded ... DbListHead_Class = 207
+                        DbListNode_Class = 206
+
+...NOTE... ShellLoadCode:: Class[ 228] will NOT be Activated.
+
+
+...NOTE... ShellLoadCode:: Class[ 229] will NOT be Activated.
+
+  Primal_CreateDb Accessed !!!
+ CREATE  Db Header and Db Primal  ... 
+  NEW DB [ 5] Created.
+   DrawLibCreate:: Db[  5]; VpartsDir=   1
+
+ Initialize the Class maps of this schema.
+  Primal_CreateDb Accessed !!!
+ CREATE  Db Header and Db Primal  ... 
+  NEW DB [ 6] Created.
+
+ ***NOTE***  Persons Library Extended!
+
+ Create <131072> Persons.
+ ItNum      0. Person[  6:       5]. Name= Riddell        , Robert V.       ;
+
+ LAST Person Read::
+ ItNum    250. Person[  6:     503]. Name= Gonzales       , Warren X.       ;
+
+ BUILD <Query0>   for <Part2>  class::
+
+  if (link[1].length >=    5) ::
+
+ Build Query2 for <Address>   class::
+
+  if (State == CA || State == T*)
+
+ Build Query1 for <Person>    class::
+
+  if (LastName  >= H* && LastName <= P* && Query0(Residence)) ::
+
+ BUILD <Query3> for <DrawObj>    class::
+
+  if (Id  >= 3000 
+  &&  (Id >= 3000 && Id <= 3001)
+  &&  Id >= 3002)
+
+ BUILD <Query4> for <NamedDrawObj>   class::
+
+  if (Nam ==       Pre*
+  || (Nam ==   ??Mid???  || == Pre??Mid??   || ==     ??Post
+       || ==  Pre??Post  || == ??Mid???Post   || == Pre??Mid???Post)
+  && Id <= 7)
+      SEED          :=    1008; Swap     = False; RgnEntries =    80
+
+ OUTER LOOP [  1] :  NewParts = 30 LookUps = 5 StuffParts = 20.
+
+ Create 30 New Parts
+ Create Part      1. Token[  4:       2].
+
+  <    30> Parts Created. CurrentId=    30
+
+ Connect each instantiated Part TO 3 unique Parts
+ Connect Part      1. Token[  4:       2]
+   Connect  Part      9. Token[  4:      10] FromList=    10.
+   Connect  Part     20. Token[  4:      21] FromList=    21.
+   Connect  Part      3. Token[  4:       4] FromList=     4.
+
+ SET  <DrawObjs>    entries::
+      1. [  5:       5]  := <1       >; @[:     6]
+   Iteration count =    30
