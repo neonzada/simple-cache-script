@@ -1,5 +1,3 @@
-#Use bench.sh instead, issues with GO benchmark here
-
 import argparse
 import subprocess
 import re
@@ -53,7 +51,7 @@ def parse_print_output(output) -> None:
 def run_sim(config, compilerPath, optArgs, benchPath):
   config_list = config.split()
   try:
-    command = ["./sim-cache"]
+    command = ["./simplesim-3.0/sim-cache"]
     for c in config_list:
       command.append(c)
 
@@ -83,7 +81,7 @@ def main() -> None:
   print(f"\tConfig: {args.config}")
   print(f"\tBench: {args.bench}\n\n")
 
-  compilerPath = benchPath = "./benchmarks/"
+  compilerPath = benchPath = "./Benchmarks/"
   optArgs = ""
   
   if(args.bench == "go"):

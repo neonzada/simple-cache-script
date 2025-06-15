@@ -7,13 +7,13 @@ rm -f results/*
 CONFIG_FILE=$1
 BENCHMARK=$2
 
-COMPILER_PATH="Benchmarks/$BENCHMARK/${BENCHMARK}.ss"
+COMPILER_PATH="benchmarks/$BENCHMARK/${BENCHMARK}.ss"
 
 if [[ "$BENCHMARK" == "go" ]]; then
-  INPUT_PATH="Benchmarks/go/2stone9.in"
+  INPUT_PATH="benchmarks/go/2stone9.in"
   EXTRA_ARGS="50 9"
 elif [[ "$BENCHMARK" == "li" ]]; then
-  INPUT_PATH="Benchmarks/li/train.lsp"
+  INPUT_PATH="benchmarks/li/train.lsp"
   EXTRA_ARGS=""
 else
   echo "ERROR: undefined benchmark"
@@ -26,7 +26,7 @@ while IFS= read -r config_line; do
   echo "Running config: $config_line"
   CONFIG_ARGS=($config_line)
 
-  COMMAND=(./simplesim-3.0/sim-cache "${CONFIG_ARGS[@]}" "$COMPILER_PATH" $EXTRA_ARGS "$INPUT_PATH")
+  COMMAND=(./sim-cache "${CONFIG_ARGS[@]}" "$COMPILER_PATH" $EXTRA_ARGS "$INPUT_PATH")
   echo "Command: ${COMMAND[*]}"
 
   OUTPUT_FILE="results/${BENCHMARK}_$(echo $config_line | tr ' :/' '_').out"
